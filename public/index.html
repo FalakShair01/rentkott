@@ -95,26 +95,23 @@
         </div>
 
         <!-- Step 4: Confirmation Page -->
-        <div x-show="step === 4" class="bg-white rounded-xl shadow-md p-2 pl-4 ">
+        <div x-show="step === 4" class="bg-white rounded-xl p-2 pl-4 ">
           <h1 class="text-xs font-bold text-center mb-2">BESTÄLLNING 28 JUNI</h1>
           <div class="text-center mb-4">
             <button @click="step = 1" class="bg-green-200 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">Ny beställning</button>
             
           </div>
           <div class="flex justify-center mb-4">
-            <img
-              src="https://images.icon-icons.com/2699/PNG/512/javascript_logo_icon_168607.png"
-              alt="Logo"
-              class="h-28 w-28 rounded-full border-2 border-gray-400"
-            />
+            <div class="h-28 w-28 rounded-full border-2 border-gray-400 overflow-hidden">
+              <img
+                src="assests/images/Logo.png"
+                alt="Logo"
+                class="w-full h-full object-cover"
+              />
+            </div>
           </div>
           <p class="font-bold mb-2 flex items-center">
             Bara ett steg kvar!
-            <img
-              src="https://cdn.creazilla.com/silhouettes/7966430/baby-feet-silhouette-000000-sm.png"
-              alt="footsteps"
-              class="h-5 w-5 ml-2"
-            />
           </p>
           <p class="mb-2">
             Vi har nu skickat en Swish-länk motsvarande 50% av det slutgiltiga priset till: name.surname@email.com.
