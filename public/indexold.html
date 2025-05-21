@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beställning 28 Juni</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" />
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js"></script>
+  </head>
+  <body class="bg-gray-100 p-4" x-data="meatOrder()">
+    <div class="max-w-md mx-auto bg-white p-6 rounded-xl shadow-lg">
+      <!-- Header -->
+      <div class="sticky top-0 z-50 bg-white pb-4">
+        <h1 class="text-center text-xl font-extrabold mb-1">BESTÄLLNING 28 JUNI</h1>
+        <div class="flex justify-center items-center gap-3 text-sm mb-1">
+          <p class="font-semibold">
+            <span>Total: <span x-text="totalPrice + ' kr'"></span></span> |
+            <span>Vikt: <span x-text="totalWeight + ' kg'"></span></span>
+          </p>
+        </div>
+        <div class="flex justify-center items-center gap-3 text-sm">
+          <button
+            x-show="step > 1"
+            @click="step--"
+            class="bg-red-100 text-red-700 px-4 py-1 rounded-full font-semibold"
+          >Tillbaka</button>
+          <span x-show="step < 2" class="px-4 py-1 rounded-full font-semibold text-white">Tillbaka</span>
+          <button
+            @click="if(step < 3) step++; else alert('Beställning skickad!')"
+            class="bg-green-100 text-green-700 px-4 py-1 rounded-full font-semibold"
+            x-text="step === 3 ? 'Beställ' : 'Nästa'"
+          ></button>
+        </div>
+      </div>
+
+      <!-- Step 1: Items -->
+      <div x-show="step === 1" class="pt-4">
+        <template x-for="(item, index) in items" :key="index">
+          <div class="flex items-center justify-between py-3 border-b">
+            <img src="https://purepng.com/public/uploads/large/purepng.com-meatfood-meat-red-fresh-grill-cook-beef-steak-9415246237676ksid.png" class="w-16 h-16 rounded" alt="meat" />
+            <div class="flex-1 ml-4">
+              <h2 class="font-bold text-sm">MEAT PART X</h2>
+              <p class="text-xs text-gray-600">449,00 kr/kg</p>
+              <p class="text-xs text-gray-500">Remaining: <span x-text="item.remaining + ' kg'"></span></p>
+            </div>
+            <div class="flex items-center border rounded">
+              <button @click="decrement(index)" class="px-2 py-1">-</button>
+              <input type="text" class="w-8 text-center border-l border-r text-sm" :value="item.quantity" readonly />
+              <button @click="increment(index)" class="px-2 py-1">+</button>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- Step 2: Form -->
+      <div x-show="step === 2" class="grid gap-3 pt-6">
+        <div>
+          <label for="fullname" class="block text-xs font-medium text-gray-700 mb-1">Namn</label>
+          <input type="text" id="fullname" placeholder="Full name" class="p-2 border rounded-lg text-sm w-full" />
+        </div>
+        
+        <div>
+          <label for="phone" class="block text-xs font-medium text-gray-700 mb-1">Telefon</label>
+          <input type="text" id="phone" placeholder="070 466 90 91" class="p-2 border rounded-lg text-sm w-full" />
+        </div>
+        
+        <div>
+          <label for="email" class="block text-xs font-medium text-gray-700 mb-1">E-post</label>
+          <input type="email" id="email" placeholder="Email" class="p-2 border rounded-lg text-sm w-full" />
+        </div>
+        
+        <div>
+          <label for="address" class="block text-xs font-medium text-gray-700 mb-1">Adress</label>
+          <input type="text" id="address" placeholder="Address" class="p-2 border rounded-lg text-sm w-full" />
+        </div>
+        
+        <div>
+          <label for="note" class="block text-xs font-medium text-gray-700 mb-1">Anteckning</label>
+          <input type="text" id="note" placeholder="Note to company" class="p-2 border rounded-lg text-sm w-full" />
+        </div>
+      </div>
+
+      <!-- Step 3: Summary -->
+      <div x-show="step === 3" class="pt-6 text-sm">
+        <p class="mb-2 font-semibold">Hemleverans: 99 kr</p>
+        <p class="mb-2 font-semibold">Slutgiltigt pris: <span x-text="(totalPrice + 99) + ' kr'"></span></p>
+
+        <p><strong>Mottagare:</strong> Name Surname, 070 123 45 67</p>
+        <p><strong>Mottagaradress:</strong> Apple Street 5, 123 45 Apple City</p>
+        <p><strong>Leveransdatum:</strong> Onsdag, 14 Maj 2025</p>
+
+        <h3 class="font-semibold mt-4 mb-1">Orderspecifikation:</h3>
+        <div class="border rounded overflow-x-auto">
+          <table class="w-full border-collapse text-xs">
+            <thead>
+              <tr class="bg-green-100">
+                <th class="border px-2 py-1">Köttdel</th>
+                <th class="border px-2 py-1">Pris/kg</th>
+                <th class="border px-2 py-1">Beställning (kg)</th>
+                <th class="border px-2 py-1">Summa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="item in items">
+                <tr>
+                  <td class="border px-2 py-1">MEAT PART X</td>
+                  <td class="border px-2 py-1">449 kr/kg</td>
+                  <td class="border px-2 py-1" x-text="item.quantity + ' kg'"></td>
+                  <td class="border px-2 py-1" x-text="item.quantity * 449 + ' kr'"></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function meatOrder() {
+        return {
+          step: 1,
+          items: [
+            { quantity: 0, remaining: 25 },
+            { quantity: 0, remaining: 25 },
+            { quantity: 0, remaining: 25 },
+            { quantity: 0, remaining: 25 },
+          ],
+          get totalPrice() {
+            return this.items.reduce((sum, item) => sum + item.quantity * 449, 0);
+          },
+          get totalWeight() {
+            return this.items.reduce((sum, item) => sum + item.quantity, 0);
+          },
+          increment(index) {
+            this.items[index].quantity++;
+          },
+          decrement(index) {
+            if (this.items[index].quantity > 0) {
+              this.items[index].quantity--;
+            }
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

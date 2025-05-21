@@ -1,131 +1,162 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beställning 28 Juni</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js"></script>
+  </head>
+  <body class="flex items-center justify-center min-h-screen bg-gray-100 p-4" x-data="meatApp()">
+    <div class="w-full max-w-md">
+      <div class="bg-white p-6 rounded-xl shadow-lg">
 
-<head>
-	<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="author" content="Rentkott">
+        <!-- Header -->
+        <div x-show="step !== 4" class="sticky top-0 z-50 bg-white pb-4">
+  <h1 class="text-center text-xl font-extrabold mb-1">BESTÄLLNING 28 JUNI</h1>
+  <div class="flex justify-center items-center gap-3 text-sm mb-1">
+    <p class="font-semibold">
+      <span>Total: <span x-text="totalPrice + ' kr'"></span></span> |
+      <span>Vikt: <span x-text="totalWeight + ' kg'"></span></span>
+    </p>
+  </div>
+  <div class="flex justify-center items-center gap-3 text-sm">
+    <button x-show="step > 1" @click="step--" class="bg-red-100 text-red-700 px-4 py-1 rounded-full font-semibold">Tillbaka</button>
+    <button @click="if(step < 3) step++; else step = 4" class="bg-green-100 text-green-700 px-4 py-1 rounded-full font-semibold" x-text="step === 3 ? 'Beställ' : 'Nästa'"></button>
+  </div>
+</div>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="assets/font-awesome/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-	<title>Home</title>
-	<link rel="icon" href="assets/img/favicon-16x16.png" type="image/x-icon">
-
-
-</head>
-<body class="has-loading-screen ts-theme-light">
-
-    <!--*************************************************************************************************************-->
-    <!--************ MAIN SCREEN ************************************************************************************-->
-    <!--*************************************************************************************************************-->
-
-    <div class="ts-page-wrapper">
-        <div class="container">
-
-            <!--NAVIGATION ******************************************************************************************-->
-            <header id="header">
-                <nav class="navbar navbar-light ts-separate-bg-element">
-                    <a class="navbar-brand" href="#">
-                        <img src="assets/img/logo-b.png" alt="">
-                    </a>
-                </nav>
-                <!--end navbar-->
-            </header>
-            <!--end #header-->
-
-            <!--CONTENT *********************************************************************************************-->
-            <main id="main-content">
-                <div class="ts-content-wrapper">
-                    <div class="row">
-                        <!--Page Title-->
-                        <div class="col-md-6">
-                            <h1>Get Ready For Our<br>ICO Launch</h1>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse viverra lectus neque.
-                            </p>
-                            <a href="./gallery.html" class="btn btn-primary mr-2">About Us</a>
-                            <a href="./contact.html" class="btn btn-primary mr-2">Contact Us</a>
-                            <a href="./product.html" class="btn btn-outline-dark mr-2">Order Now</a>
-
-                        </div>
-                        <!--end col-md-6-->
-                        <!--Count Down-->
-                        <div class="col-md-6">
-                            <div class="text-center my-4">
-                                <div class="ts-count-down" data-date="May 2, 2025 23:59:59"></div>
-                                <!--end ts-count-down-->
-                            </div>
-                        </div>
-                        <!--end col-md-6-->
-                    </div>
-                    <!--end row-->
-                </div>
-                <!--end ts-content-wrapper-->
-            </main>
-            <!--end #main-content-->
-
-            <!--FOOTER **********************************************************************************************-->
-            <footer id="footer">
-                <div class="clearfix py-4">
-                    <div class="float-none float-sm-left">
-                        <div class="ts-social-icons">
-                            <a href="#" class="fab fa-facebook"></a>
-                            <a href="#" class="fab fa-twitter"></a>
-                            <a href="#" class="fab fa-pinterest"></a>
-                            <a href="#" class="fab fa-instagram"></a>
-                        </div>
-                    </div>
-                    <!--end social-icons-->
-                    <div class="float-none float-sm-right text-left text-sm-right ts-opacity__50">
-                        <small>© 2025 Rentkott, All Rights Reserved</small>
-                    </div>
-                    <!--end text-left-->
-                </div>
-                <!--end clearfix-->
-            </footer>
-            <!--end #footer-->
+        <!-- Step 1: Items -->
+        <div x-show="step === 1" class="pt-4">
+          <template x-for="(item, index) in items" :key="index">
+            <div class="flex items-center justify-between py-3 border-b">
+              <img src="https://purepng.com/public/uploads/large/purepng.com-meatfood-meat-red-fresh-grill-cook-beef-steak-9415246237676ksid.png" class="w-16 h-16 rounded" alt="meat" />
+              <div class="flex-1 ml-4">
+                <h2 class="font-bold text-sm">MEAT PART X</h2>
+                <p class="text-xs text-gray-600">449,00 kr/kg</p>
+                <p class="text-xs text-gray-500">Remaining: <span x-text="item.remaining + ' kg'"></span></p>
+              </div>
+              <div class="flex items-center border rounded">
+                <button @click="decrement(index)" class="px-2 py-1">-</button>
+                <input type="text" class="w-8 text-center border-l border-r text-sm" x-model="item.quantity" readonly />
+                <button @click="increment(index)" class="px-2 py-1">+</button>
+              </div>
+            </div>
+          </template>
         </div>
-        <!--end container-->
 
-        <!--BACKGROUND **********************************************************************************************-->
-        <div class="ts-background ts-shapes-canvas position-fixed ts-separate-bg-element" data-bg-color="#fff">
-            <div class="ts-background-image ts-animate ts-scale" data-bg-image="assets/img/bg/14.png" data-bg-opacity=".1"></div>
-            <div class="ts-background-image ts-animate ts-bounce" data-bg-image="assets/img/bg/13.png"></div>
-            <div class="ts-background-image ts-animate ts-scale" data-bg-image="assets/img/bg/12.png" data-bg-opacity=".3"></div>
-            <div class="ts-background-image ts-animate ts-scale" data-bg-image="assets/img/bg/11.png"></div>
-            <div class="ts-background-image ts-animate ts-bounce" data-bg-image="assets/img/bg/10.png"></div>
-            <div class="ts-background-image ts-animate ts-bounce" data-bg-image="assets/img/bg/9.png" data-bg-opacity=".8"></div>
-            <div class="ts-background-image ts-animate ts-bounce" data-bg-image="assets/img/bg/8.png" data-bg-opacity=".8"></div>
-            <div class="ts-background-image ts-animate ts-bounce" data-bg-image="assets/img/bg/7.png"></div>
-            <div class="ts-background-image ts-animate ts-bounce" data-bg-image="assets/img/bg/6.png" data-bg-opacity=".8"></div>
-            <div class="ts-background-image ts-animate" data-bg-image="assets/img/bg/5.png" data-bg-opacity=".8"></div>
-            <div class="ts-background-image ts-animate ts-bounce" data-bg-image="assets/img/bg/4.png"></div>
-            <div class="ts-background-image ts-animate ts-bounce" data-bg-image="assets/img/bg/3.png" data-bg-opacity=".8"></div>
-            <div class="ts-background-image ts-animate ts-bounce" data-bg-image="assets/img/bg/2.png"></div>
-            <div class="ts-background-image ts-animate ts-bounce" data-bg-image="assets/img/bg/1.png" data-bg-opacity=".8"></div>
+        <!-- Step 2: Form -->
+        <div x-show="step === 2" class="grid gap-3 pt-6">
+          <input type="text" placeholder="Full name" class="p-2 border rounded-lg text-sm" />
+          <input type="text" placeholder="070 466 90 91" class="p-2 border rounded-lg text-sm" />
+          <input type="email" placeholder="Email" class="p-2 border rounded-lg text-sm" />
+          <input type="text" placeholder="Address" class="p-2 border rounded-lg text-sm" />
+          <textarea name="message" placeholder="Note to company" rows="5" cols="40" class="p-2 border rounded-lg text-sm"></textarea>
         </div>
-        <!--end ts-background-->
+
+        <!-- Step 3: Summary -->
+         <hr x-show="step === 3" class="border-t-2 border-gray-400 mt-6">
+        <div x-show="step === 3" class="pt-3 text-sm">
+          <p class="mb-1 font-semibold">Hemleverans: 99 kr</p>
+          <p class="font-semibold">
+            Slutgiltigt pris:
+            <span x-text="totalPrice + ' kr + 99 kr = ' + (totalPrice + 99) + ' kr'"></span>
+          </p>
+          <hr class="my-2 border-t-2 border-gray-400">
+
+          <p><strong>Mottagare:</strong><br />Surname, 070 123 45 67</p>
+          <p><strong>Mottagaradress:</strong><br />Apple Street 5, 123 45 Apple City</p>
+          <p><strong>Leveransdatum:</strong><br />Onsdag, 14 Maj 2025</p>
+          <hr class="my-2 border-t-2 border-gray-400">
+
+          <h3 class="font-semibold mt-4 mb-1">Orderspecifikation:</h3>
+          <div class="border rounded overflow-x-auto">
+            <table class="w-full border-collapse text-xs">
+              <thead>
+                <tr class="bg-green-100">
+                  <th class="border px-2 py-1">Köttdel</th>
+                  <th class="border px-2 py-1">Pris/kg</th>
+                  <th class="border px-2 py-1">Beställning (kg)</th>
+                  <th class="border px-2 py-1">Summa</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template x-for="item in items">
+                  <tr>
+                    <td class="border px-2 py-1">MEAT PART X</td>
+                    <td class="border px-2 py-1">449 kr/kg</td>
+                    <td class="border px-2 py-1" x-text="item.quantity + ' kg'"></td>
+                    <td class="border px-2 py-1" x-text="item.quantity * 449 + ' kr'"></td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Step 4: Confirmation Page -->
+        <div x-show="step === 4" class="bg-white rounded-xl shadow-md p-2 pl-4 ">
+          <h1 class="text-xs font-bold text-center mb-2">BESTÄLLNING 28 JUNI</h1>
+          <div class="text-center mb-4">
+            <button @click="step = 1" class="bg-green-200 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">Ny beställning</button>
+            
+          </div>
+          <div class="flex justify-center mb-4">
+            <img
+              src="https://images.icon-icons.com/2699/PNG/512/javascript_logo_icon_168607.png"
+              alt="Logo"
+              class="h-28 w-28 rounded-full border-2 border-gray-400"
+            />
+          </div>
+          <p class="font-bold mb-2 flex items-center">
+            Bara ett steg kvar!
+            <img
+              src="https://cdn.creazilla.com/silhouettes/7966430/baby-feet-silhouette-000000-sm.png"
+              alt="footsteps"
+              class="h-5 w-5 ml-2"
+            />
+          </p>
+          <p class="mb-2">
+            Vi har nu skickat en Swish-länk motsvarande 50% av det slutgiltiga priset till: name.surname@email.com.
+          </p>
+          <p class="mb-2">
+            Så snart vi mottagit din betalning blir din beställning bekräftad – och du får då en beställningsbekräftelse från oss.
+          </p>
+          <p class="mb-2">Återstående summa betalas vid leverans 🚚</p>
+          <p class="mb-4">Tveka inte att höra av dig vid frågor eller funderingar!</p>
+          <p class="font-semibold mb-4">Bästa hälsningar,<br />RENTKÖTT.SE</p>
+        </div>
+
+      </div>
     </div>
-    <!--end ts-page-wrapper-->
 
-
-    <!--*************************************************************************************************************-->
-    <!--************ JS SCRIPTS *************************************************************************************-->
-    <!--*************************************************************************************************************-->
-
-	<script src="assets/js/jquery-3.3.1.min.js"></script>
-	<script src="assets/js/popper.min.js"></script>
-	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-	<script src="assets/js/jquery.countdown.min.js"></script>
-	<script src="assets/js/jquery.validate.min.js"></script>
-	<script src="assets/js/jquery-validate.bootstrap-tooltip.min.js"></script>
-    <script src="assets/js/custom.js"></script>
-
-</body>
-
+    <!-- Alpine.js Logic -->
+    <script>
+      document.addEventListener('alpine:init', () => {
+        Alpine.data('meatApp', () => ({
+          step: 1,
+          items: [
+            { quantity: 0, remaining: 25 },
+            { quantity: 0, remaining: 25 },
+            { quantity: 0, remaining: 25 },
+            { quantity: 0, remaining: 25 },
+          ],
+          get totalPrice() {
+            return this.items.reduce((sum, item) => sum + item.quantity * 449, 0);
+          },
+          get totalWeight() {
+            return this.items.reduce((sum, item) => sum + item.quantity, 0);
+          },
+          increment(index) {
+            this.items[index].quantity++;
+          },
+          decrement(index) {
+            if (this.items[index].quantity > 0) {
+              this.items[index].quantity--;
+            }
+          },
+        }));
+      });
+    </script>
+  </body>
 </html>
